@@ -268,21 +268,28 @@ class WP_Form {
 		), $args);
 
 		// Open the field wrapper
-		$output = '<' . $args['wrap_tag'];
+    $output = '';
 
-		// Set field wrapper attributes
-		foreach(array('wrap_class', 'wrap_id', 'wrap_style') as $key) {
-	    if(isset($args[$key])) {
+    if ($args['wrap_tag']) {
 
-	    	if(is_array($args[$key]))
-	    		$args[$key] = implode(" ", $args[$key]);
+      $output .= '<' . $args['wrap_tag'];
 
-	    	$output .= ' ' . substr($key, strpos($key, "_") + 1) . '="' . $args[$key] .'"';
+      // Set field wrapper attributes
+      foreach(array('wrap_class', 'wrap_id', 'wrap_style') as $key) {
+        if(isset($args[$key])) {
 
-	    }
-		}
+          if(is_array($args[$key]))
+            $args[$key] = implode(" ", $args[$key]);
 
-		$output .= ">";
+          $output .= ' ' . substr($key, strpos($key, "_") + 1) . '="' . $args[$key] .'"';
+
+        }
+      }
+
+      $output .= ">";
+
+    } 
+
 		
 		// Print a label UNLESS this is a button
 		if($args['label'] && $args['tag'] !== 'button') {
@@ -315,8 +322,10 @@ class WP_Form {
 			$output .= '<small style="display:none" class="wp-form-error"></small>';
 		}
 
-		// Close the field wrapper
-		$output .= "</" . $args['wrap_tag'] . '>';
+    if ($args['wrap_tag']) {
+      // Close the field wrapper
+      $output .= "</" . $args['wrap_tag'] . '>';
+    }
 
 		return $output;
 	}
